@@ -1,10 +1,14 @@
 #!/bin/bash
 
+# TODO : handle sudo  , handle directories
+
 NOOPERAND=1
 NOSUCHFILE=2
 
 TRASHPATH="/home/$USER/.local/share/Trash"
 TRASHPATHROOT="/root/.local/share/Trash"
+
+RECURSIVE_FLAG=0
 
 usage(){
 # $1 = error code ,  $2 = any file or argument name to be shown(like a file name when getting NOSUCHFILE error)
@@ -16,11 +20,25 @@ usage(){
     
     $NOSUCHFILE)
         echo "rm: cannot remove '$2': No such file or directory" ;;
+
+    $HELP)
+        echo "This is the help section which is incomplete" ;;
+
+
     *)
         echo something else ;;
+    
     esac
 }
 
+
+
+deleteFromTrash(){
+    if [ -e "$TRASHPATH/files/$filebasename" ]; then 
+        rm -r "$TRASHPATH/files/$filebasename" ; 
+        rm "$TRASHPATH/info/$filebasename.trashinfo"
+    fi
+}
 
 
 
@@ -33,7 +51,8 @@ filebasename=$(basename $1)
 filefullpath=$(realpath $1)
 filedirname=$(dirname $filefullpath)
 
-filename=$1
+filename=$1  # Original filename
+readonly filename
 
 copyToTrash(){
     # $1 = relative filepath that is exisiting in the filesystem
@@ -48,14 +67,13 @@ copyToTrash(){
     while test 1 -eq 1
     do
     echo "duplicate Number = $duplicateNumber"
-    set -x
 
     # first time try to move to trash
     if test $duplicateNumber -eq 0
         then
             if ! test -e "$TRASHPATH/files/$filebasename"
             then
-                cp "$filename"  "$TRASHPATH/files/$filebasename" -n
+                cp -r "$filename"  "$TRASHPATH/files/$filebasename" -n
                 if test $? -eq 0
                     then 
                     return 0 ; 
@@ -69,7 +87,7 @@ copyToTrash(){
         else
             if ! test -e "$TRASHPATH/files/$filebasename ($duplicateNumber)"
             then
-                cp $filename "$TRASHPATH/files/$filebasename ($duplicateNumber)"
+                cp -r $filename "$TRASHPATH/files/$filebasename ($duplicateNumber)"
                 if test $? -eq 0
                 then
                     filebasename="$filebasename ($duplicateNumber)" 
@@ -84,13 +102,12 @@ copyToTrash(){
     fi
     
     ((duplicateNumber++))
-    set +x
 
     done
     }
 
     writeTrashInfo(){
-        # Depends on filefullpath , filebasename
+        #function Depends on variables filefullpath , filebasename
         # The filefullpath can also be modified filename with the duplicate number
         # The filebasename can  also be modified filename with the duplicate number
 
@@ -103,14 +120,63 @@ copyToTrash(){
 
 
 main(){
+
+    # arg_f=0
+    # arg_d=0
+    # arg_i=0
+    # arg_I=0
+    # arg_v=0
+    # arg_help=0
+    # arg_version=0
+    # arg_one_file_system=0
+    # arg_no_preserve_root=0
+
+    OPTIONS_ONLY_ARGS=()
+    FILES_ONLY_ARGS=() #array which contains only those parameters which are files and directories 
+
+    echo "Resursive flag = $recursiveFlag"    
+
+
+    exit 0 
     for file in $@
     do
         if test -e $file && test -r $file
         then
+            set -x
+            
             copyToTrashAndWriteInfo $file
+            rm $file  || deleteFromTrash 
         fi
     done
 }
 
 
-copyToTrashAndWriteInfo f8
+handleArguments(){
+    # requires the argument array of the script $@
+
+    if [ $# -eq 0 ] ; then 
+        usage 1
+    fi
+
+    while getopts ":rR" opt ; do
+        case $opt in 
+
+            r) RECURSIVE_FLAG=1 ;;
+            R) RECURSIVE_FLAG=1 ;;
+
+        esac
+    done
+
+    for arg in $@ ; do 
+        case $arg in 
+            '--recursive') RECURSIVE_FLAG=1 ;; 
+        esac
+    done
+
+}
+
+
+
+
+handleArguments $@
+main $@
