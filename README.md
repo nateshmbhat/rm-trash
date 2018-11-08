@@ -39,7 +39,7 @@ Method 2 :
 
 **Have an alias for rm pointing to this script in bash_aliases**
 ```
-echo "alias rm=safe-rm" > ~/.bash_aliases
+echo "alias rm=safe-rm" >> ~/.bash_aliases
 ```
 
 
