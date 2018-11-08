@@ -11,6 +11,7 @@ TRASHPATHROOT="/root/.local/share/Trash"
 RECURSIVE_FLAG=0
 OPTIONAL_ARGS=()
 FILE_ARGS=()
+NO_BACKUP_FLAG=0
 
 
 usage(){
@@ -24,8 +25,43 @@ usage(){
     "$NOSUCHFILE")
         echo "rm: cannot remove '$2': No such file or directory" ;;
 
-    "$HELP")
-        echo "This is the help section which is incomplete" ;;
+    "help")
+        echo "
+Usage: $0 [OPTION]... [FILE]...
+
+Remove (unlink) the FILE(s).
+
+  --no-trash            Don't put the files in the trash , directly give all the options and files to rm command to remove them.
+
+  -f, --force           ignore nonexistent files and arguments, never prompt
+  -i                    prompt before every removal
+  -I                    prompt once before removing more than three files, or
+                          when removing recursively; less intrusive than -i,
+                          while still giving protection against most mistakes
+      --interactive[=WHEN]  prompt according to WHEN: never, once (-I), or
+                          always (-i); without WHEN, prompt always
+      --one-file-system  when removing a hierarchy recursively, skip any
+                          directory that is on a file system different from
+                          that of the corresponding command line argument
+      --no-preserve-root  do not treat '/' specially
+      --preserve-root   do not remove '/' (default)
+  -r, -R, --recursive   remove directories and their contents recursively
+  -d, --dir             remove empty directories
+  -v, --verbose         explain what is being done
+      --help     display this help and exit
+      --version  output version information and exit
+
+By default, safe-rm does not remove directories.  Use the --recursive (-r or -R)
+option to remove each listed directory, too, along with all of its contents.
+
+To remove a file whose name starts with a '-', for example '-foo',
+use one of these commands:
+  $0 -- -foo
+
+  $0 ./-foo
+
+Note that if you use safe-rm to remove a file it can be recovered from trash.
+For greater assurance that the contents are truly unrecoverable, consider using shred. " ;;
 
 
     *)
@@ -124,9 +160,11 @@ copyToTrash(){
 main(){
 
     echo "RECURSION : $RECURSIVE_FLAG" ; 
-    set -x
+    LOOPENTERFLAG=0
+
     for file in ${FILE_ARGS[@]}
     do
+        LOOPENTERFLAG=1
         echo "file =$file"
         if test -e "$file" && test -r "$file" ; then
 
@@ -139,10 +177,13 @@ main(){
 
         else
             rm ${OPTIONAL_ARGS[@]} "$file"
-
         fi
 
     done
+
+    if [ $LOOPENTERFLAG -eq 0 ] ; then 
+        rm ${OPTIONAL_ARGS[@]}
+    fi
 }
 
 
@@ -157,26 +198,41 @@ handleArguments(){
     for arg in $@ ; do 
 
         if [ "${arg:0:1}" == '-' ] ; then
+            if [ "$arg" == "--no-trash" ] ;then 
+                NO_BACKUP_FLAG=1
+                continue ; 
+            fi
+            
             OPTIONAL_ARGS+=($arg)
         else 
             FILE_ARGS+=($arg)
         fi
 
         case "$arg" in 
+            '--help') 
+                usage 'help'
+                exit 0 ;;
+
             '--recursive') RECURSIVE_FLAG=1 ;; 
-            '-r') RECURSIVE_FLAG=1 ;;
-            '-R') RECURSIVE_FLAG=1 ;;
+
             *)
                 if [ "${arg:0:1}" == '-' -a "${arg:1:1}" != '-' ] ;then
                     for (( i=0; i<${#arg}; i++ )) ; do
-                        if [ "${arg:$i:1}" == 'r'  -o  "${arg:$i:1}" == 'R' ] ; then
-                            RECURSIVE_FLAG=1 
-                        fi
+
+                        case "${arg:$i:1}" in
+
+                            r|R) RECURSIVE_FLAG=1 ;; 
+
+                        esac
                     done
                 fi
         esac
     done
 
+    if [ $NO_BACKUP_FLAG -eq 1 ] ; then 
+        rm ${OPTIONAL_ARGS[@]} "${FILE_ARGS[@]}"
+        exit 0
+    fi
 }
 
 
