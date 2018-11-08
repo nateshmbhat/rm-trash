@@ -179,4 +179,6 @@ handleArguments(){
 
 handleArguments $@
 echo ${OPTIONAL_ARGS[@]}
+echo ${FILE_ARGS[@]}
+
 # main $@
