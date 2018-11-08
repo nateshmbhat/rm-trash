@@ -124,20 +124,21 @@ copyToTrash(){
 main(){
 
     echo "RECURSION : $RECURSIVE_FLAG" ; 
-    for file in $@
+    for file in ${FILE_ARGS[@]}
     do
-        set -x
         if test -e "$file" && test -r "$file"
         then
             if [ -d "$file" -a "$RECURSIVE_FLAG" == "0" ] ; then 
                 continue ;
             fi
             copyToTrashAndWriteInfo "$file"
+            rm "$OPTIONAL_ARGS" "$file"  || deleteFromTrash
+        fi
+
+        if [ ! -e "$file" ];  then
+            rm $OPTIONAL_ARGS "$file"
         fi
     done
-
-#   After saving the files in trash , send the command line arguments to rm directly
-    rm "$@"
 }
 
 
@@ -149,10 +150,9 @@ handleArguments(){
         exit 1
     fi
 
-    set -x
-     for arg in $@ ; do 
+    for arg in $@ ; do 
 
-        if [ "$(expr $arg : "\(-\).*" )" ] ; then
+        if [ "${arg:0:1}" == '-' ] ; then
             OPTIONAL_ARGS+=($arg)
         else 
             FILE_ARGS+=($arg)
@@ -163,7 +163,7 @@ handleArguments(){
             '-r') RECURSIVE_FLAG=1 ;;
             '-R') RECURSIVE_FLAG=1 ;;
             *)
-                if [ "$(expr $arg : "\(-\).*" )" == '-' -a "${arg:1:1}" != '-' ] ;then
+                if [ "${arg:0:1}" == '-' -a "${arg:1:1}" != '-' ] ;then
                     for (( i=0; i<${#arg}; i++ )) ; do
                         if [ "${arg:$i:1}" == 'r'  -o  "${arg:$i:1}" == 'R' ] ; then
                             RECURSIVE_FLAG=1 
@@ -180,4 +180,4 @@ handleArguments(){
 handleArguments $@
 echo ${OPTIONAL_ARGS[@]}
 echo ${FILE_ARGS[@]}
-# main $@
+main $@
