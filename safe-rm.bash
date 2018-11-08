@@ -124,20 +124,24 @@ copyToTrash(){
 main(){
 
     echo "RECURSION : $RECURSIVE_FLAG" ; 
+    set -x
     for file in ${FILE_ARGS[@]}
     do
-        if test -e "$file" && test -r "$file"
-        then
-            if [ -d "$file" -a "$RECURSIVE_FLAG" == "0" ] ; then 
+        echo "file =$file"
+        if test -e "$file" && test -r "$file" ; then
+
+            if test -d "$file" && test "$RECURSIVE_FLAG" == "0" ; then 
+                rm ${OPTIONAL_ARGS[@]} "$file"
                 continue ;
             fi
             copyToTrashAndWriteInfo "$file"
-            rm "$OPTIONAL_ARGS" "$file"  || deleteFromTrash
+            rm ${OPTIONAL_ARGS[@]} "$file"  || deleteFromTrash
+
+        else
+            rm ${OPTIONAL_ARGS[@]} "$file"
+
         fi
 
-        if [ ! -e "$file" ];  then
-            rm $OPTIONAL_ARGS "$file"
-        fi
     done
 }
 
