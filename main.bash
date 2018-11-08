@@ -9,6 +9,9 @@ TRASHPATH="/home/$USER/.local/share/Trash"
 TRASHPATHROOT="/root/.local/share/Trash"
 
 RECURSIVE_FLAG=0
+OPTIONAL_ARGS=()
+FILE_ARGS=()
+
 
 usage(){
 # $1 = error code ,  $2 = any file or argument name to be shown(like a file name when getting NOSUCHFILE error)
@@ -52,7 +55,6 @@ filefullpath="$(realpath $1)"
 filedirname="$(dirname $filefullpath)"
 
 filename="$1"  # Original filename
-readonly filename
 
 copyToTrash(){
     # $1 = relative filepath that is exisiting in the filesystem
@@ -98,7 +100,6 @@ copyToTrash(){
                     return 1 ; 
                 fi
             fi
-
     fi
     
     ((duplicateNumber++))
@@ -132,15 +133,8 @@ main(){
                 continue ;
             fi
             copyToTrashAndWriteInfo "$file"
-
-        else 
-            if  [ "$(expr "$file" : "\(-\).*" )"  !=  '-' ]
-            then 
-                rm "$file"
-            fi
         fi
     done
-
 
 #   After saving the files in trash , send the command line arguments to rm directly
     rm "$@"
@@ -155,27 +149,34 @@ handleArguments(){
         exit 1
     fi
 
-    while getopts ":rR" opt ; do
-        echo " opt = $opt"
-        set -x
-        case "$opt" in 
+    set -x
+     for arg in $@ ; do 
 
-            r) RECURSIVE_FLAG=1 ;;
-            R) RECURSIVE_FLAG=1 ;;
-            :)echo "not working" ;;
-            *)echo "Testing *" ;;
+        if [ "$(expr $arg : "\(-\).*" )" ] ; then
+            OPTIONAL_ARGS+=($arg)
+        else 
+            FILE_ARGS+=($arg)
+        fi
 
-        esac
-    done
-
-    for arg in $@ ; do 
         case "$arg" in 
             '--recursive') RECURSIVE_FLAG=1 ;; 
+            '-r') RECURSIVE_FLAG=1 ;;
+            '-R') RECURSIVE_FLAG=1 ;;
+            *)
+                if [ "$(expr $arg : "\(-\).*" )" == '-' -a "${arg:1:1}" != '-' ] ;then
+                    for (( i=0; i<${#arg}; i++ )) ; do
+                        if [ "${arg:$i:1}" == 'r'  -o  "${arg:$i:1}" == 'R' ] ; then
+                            RECURSIVE_FLAG=1 
+                        fi
+                    done
+                fi
         esac
     done
+
 }
 
 
 
 handleArguments $@
-main $@
+echo ${OPTIONAL_ARGS[@]}
+# main $@
