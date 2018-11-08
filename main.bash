@@ -14,19 +14,19 @@ usage(){
 # $1 = error code ,  $2 = any file or argument name to be shown(like a file name when getting NOSUCHFILE error)
     case $1 in
 
-    $NOOPERAND)
+    "$NOOPERAND")
         echo "$0 : missing operand" ;
         echo "Try '$0 --help' for more information" ;;
     
-    $NOSUCHFILE)
+    "$NOSUCHFILE")
         echo "rm: cannot remove '$2': No such file or directory" ;;
 
-    $HELP)
+    "$HELP")
         echo "This is the help section which is incomplete" ;;
 
 
     *)
-        echo something else ;;
+        echo "some other parameter";;
     
     esac
 }
@@ -47,11 +47,11 @@ copyToTrashAndWriteInfo(){
 # $1 = relative filepath that is exisiting in the filesystem
 
 echo "Args = $@"
-filebasename=$(basename $1)
-filefullpath=$(realpath $1)
-filedirname=$(dirname $filefullpath)
+filebasename="$(basename $1)"
+filefullpath="$(realpath $1)"
+filedirname="$(dirname $filefullpath)"
 
-filename=$1  # Original filename
+filename="$1"  # Original filename
 readonly filename
 
 copyToTrash(){
@@ -69,7 +69,7 @@ copyToTrash(){
     echo "duplicate Number = $duplicateNumber"
 
     # first time try to move to trash
-    if test $duplicateNumber -eq 0
+    if test "$duplicateNumber" -eq 0
         then
             if ! test -e "$TRASHPATH/files/$filebasename"
             then
@@ -87,7 +87,7 @@ copyToTrash(){
         else
             if ! test -e "$TRASHPATH/files/$filebasename ($duplicateNumber)"
             then
-                cp -r $filename "$TRASHPATH/files/$filebasename ($duplicateNumber)"
+                cp -r "$filename" "$TRASHPATH/files/$filebasename ($duplicateNumber)"
                 if test $? -eq 0
                 then
                     filebasename="$filebasename ($duplicateNumber)" 
@@ -112,42 +112,38 @@ copyToTrash(){
         # The filebasename can  also be modified filename with the duplicate number
 
         trashmsg="[Trash Info]\nPath=$(realpath $filename)\nDeletionDate=$(date -Is)"
-        echo -e $trashmsg | tee "$TRASHPATH/info/$filebasename.trashinfo"
+        echo -e "$trashmsg" | tee "$TRASHPATH/info/$filebasename.trashinfo"
     }
 
     copyToTrash  &&  writeTrashInfo  # main calls
 }
 
 
+
 main(){
 
-    # arg_f=0
-    # arg_d=0
-    # arg_i=0
-    # arg_I=0
-    # arg_v=0
-    # arg_help=0
-    # arg_version=0
-    # arg_one_file_system=0
-    # arg_no_preserve_root=0
-
-    OPTIONS_ONLY_ARGS=()
-    FILES_ONLY_ARGS=() #array which contains only those parameters which are files and directories 
-
-    echo "Resursive flag = $recursiveFlag"    
-
-
-    exit 0 
+    echo "RECURSION : $RECURSIVE_FLAG" ; 
     for file in $@
     do
-        if test -e $file && test -r $file
+        set -x
+        if test -e "$file" && test -r "$file"
         then
-            set -x
-            
-            copyToTrashAndWriteInfo $file
-            rm $file  || deleteFromTrash 
+            if [ -d "$file" -a "$RECURSIVE_FLAG" == "0" ] ; then 
+                continue ;
+            fi
+            copyToTrashAndWriteInfo "$file"
+
+        else 
+            if  [ "$(expr "$file" : "\(-\).*" )"  !=  '-' ]
+            then 
+                rm "$file"
+            fi
         fi
     done
+
+
+#   After saving the files in trash , send the command line arguments to rm directly
+    rm "$@"
 }
 
 
@@ -156,25 +152,28 @@ handleArguments(){
 
     if [ $# -eq 0 ] ; then 
         usage 1
+        exit 1
     fi
 
     while getopts ":rR" opt ; do
-        case $opt in 
+        echo " opt = $opt"
+        set -x
+        case "$opt" in 
 
             r) RECURSIVE_FLAG=1 ;;
             R) RECURSIVE_FLAG=1 ;;
+            :)echo "not working" ;;
+            *)echo "Testing *" ;;
 
         esac
     done
 
     for arg in $@ ; do 
-        case $arg in 
+        case "$arg" in 
             '--recursive') RECURSIVE_FLAG=1 ;; 
         esac
     done
-
 }
-
 
 
 
