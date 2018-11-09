@@ -64,9 +64,6 @@ Note that if you use safe-rm to remove a file it can be recovered from trash.
 For greater assurance that the contents are truly unrecoverable, consider using shred. " ;;
 
 
-    *)
-        echo "some other parameter";;
-    
     esac
 }
 
