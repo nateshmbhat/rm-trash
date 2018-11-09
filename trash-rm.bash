@@ -51,7 +51,7 @@ Remove (unlink) the FILE(s).
       --help     display this help and exit
       --version  output version information and exit
 
-By default, safe-rm does not remove directories.  Use the --recursive (-r or -R)
+By default, trash-rm does not remove directories.  Use the --recursive (-r or -R)
 option to remove each listed directory, too, along with all of its contents.
 
 To remove a file whose name starts with a '-', for example '-foo',
@@ -60,7 +60,7 @@ use one of these commands:
 
   $0 ./-foo
 
-Note that if you use safe-rm to remove a file it can be recovered from trash.
+Note that if you use trash-rm to remove a file it can be recovered from trash.
 For greater assurance that the contents are truly unrecoverable, consider using shred. " ;;
 
 
