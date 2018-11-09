@@ -1,5 +1,5 @@
 # safe-rm
-"safe-rm" puts the files you delete in a shell into the Trash (Recycle bin). The script is meant to be used in place of rm system command in linux . This script will safely delete your files and put them in the trash.
+"safe-rm" utility puts the files you delete in a shell safely into the Trash (Recycle bin). The script is meant to be used in place of rm system command in linux .
 
 This solves accidental removals. The script is meant to be used as an alias with rm directly and unlike other such scripts , it can handle duplicate files in the trash and works for recursive arguments and any other options that rm supports . 
 
