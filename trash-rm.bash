@@ -19,15 +19,16 @@ usage(){
     case $1 in
 
     "$NOOPERAND")
-        echo "$0 : missing operand" ;
-        echo "Try '$0 --help' for more information" ;;
+        echo "rm-trash : missing operand" ;
+        echo "Try 'rm-trash --help' for more information" ;;
     
     "$NOSUCHFILE")
         echo "rm: cannot remove '$2': No such file or directory" ;;
 
     "help")
         echo "
-Usage: $0 [OPTION]... [FILE]...
+
+Usage: rm-trash [OPTION]... [FILE]...
 
 Remove (unlink) the FILE(s).
 
@@ -51,16 +52,16 @@ Remove (unlink) the FILE(s).
       --help     display this help and exit
       --version  output version information and exit
 
-By default, trash-rm does not remove directories.  Use the --recursive (-r or -R)
+By default, rm-trash does not remove directories.  Use the --recursive (-r or -R)
 option to remove each listed directory, too, along with all of its contents.
 
 To remove a file whose name starts with a '-', for example '-foo',
 use one of these commands:
-  $0 -- -foo
+  rm-trash -- -foo
 
-  $0 ./-foo
+  rm-trash ./-foo
 
-Note that if you use trash-rm to remove a file it can be recovered from trash.
+Note that if you use rm-trash to remove a file it can be recovered from trash.
 For greater assurance that the contents are truly unrecoverable, consider using shred. " ;;
 
 
