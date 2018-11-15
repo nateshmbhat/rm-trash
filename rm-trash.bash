@@ -152,7 +152,7 @@ copyToTrash(){
         # The filebasename can  also be modified filename with the duplicate number
 
         trashmsg="[Trash Info]\nPath=$(realpath $filename)\nDeletionDate=$(date -Is)"
-        echo -e "$trashmsg" | tee "$TRASHPATH/info/$filebasename.trashinfo"
+        echo -e "$trashmsg" > "$TRASHPATH/info/$filebasename.trashinfo"
     }
 
     copyToTrash  &&  writeTrashInfo  # main calls
