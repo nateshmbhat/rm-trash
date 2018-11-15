@@ -26,14 +26,17 @@ usage(){
     "$NOSUCHFILE")
         echo "rm: cannot remove '$2': No such file or directory" ;;
 
+    "version")
+        echo "rm-trash 0.1" ;;
+
     "help")
         echo "
 
 Usage: rm-trash [OPTION]... [FILE]...
 
-Remove (unlink) the FILE(s).
+Options:
 
-  --no-trash            Don't put the files in the trash , directly give all the options and files to rm command to remove them.
+  --no-trash            Don't put the files in the trash , directly send all options and files to rm command to remove them.
 
   -f, --force           ignore nonexistent files and arguments, never prompt
   -i                    prompt before every removal
@@ -53,18 +56,52 @@ Remove (unlink) the FILE(s).
       --help     display this help and exit
       --version  output version information and exit
 
-By default, rm-trash does not remove directories.  Use the --recursive (-r or -R)
-option to remove each listed directory, too, along with all of its contents.
 
-To remove a file whose name starts with a '-', for example '-foo',
-use one of these commands:
-  rm-trash -- -foo
+AUTHOR: 
 
-  rm-trash ./-foo
+    Natesh M Bhat <nateshmbhatofficial@gmail.com>
 
-Note that if you use rm-trash to remove a file it can be recovered from trash.
-For greater assurance that the contents are truly unrecoverable, consider using shred. " ;;
 
+OTHER: 
+
+    By default, rm-trash does not remove directories.  Use the --recursive (-r or -R)
+    option to remove each listed directory, too, along with all of its contents.
+
+    To remove a file whose name starts with a '-', for example '-foo',
+    use one of these commands:
+    rm-trash -- -foo
+
+    rm-trash ./-foo
+
+    Note that if you use rm-trash to remove a file it can be recovered from trash.
+    For greater assurance that the contents are truly unrecoverable, consider using shred. 
+
+
+COPYRIGHT:
+
+MIT License
+
+Copyright (c) 2018 Natesh M Bhat
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the Software), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+" ;;
 
     esac
 }
@@ -215,6 +252,9 @@ handleArguments(){
         case "$arg" in 
             '--help') 
                 usage 'help'
+                exit 0 ;;
+            '--version')
+                usage 'version'
                 exit 0 ;;
 
             '--recursive') RECURSIVE_FLAG=1 ;; 

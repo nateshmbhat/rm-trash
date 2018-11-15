@@ -5,7 +5,7 @@
 ### fpm command : 
 
 ```bash
-fpm -s dir -t deb -n project_name  --deb-changelog manpagefile.1  --deb-copyright LICENSE  source_folder
+fpm -s dir -t deb -n 'rm-trash' --deb-changelog man/man1/manpage.1 --license LICENSE rm-trash/rm-trash=/usr/bin/rm-trash man/man1/manpage.1=/usr/share/man/man1/rm-trash.1
 ```
 
 For help regarding `fpm` use : `fpm --help` (has better docs than in website )
@@ -14,7 +14,7 @@ For help regarding `fpm` use : `fpm --help` (has better docs than in website )
 ### help2man command : 
 
 ```bash
-help2man scriptfile  # the script should have --help and --version options
+help2man ../../rm-trash/rm-trash -n "Put deleted files into trash for safety"  -s 1 -S Debian  > outputpage
 ```
 
 
