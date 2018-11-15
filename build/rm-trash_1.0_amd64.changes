@@ -1,0 +1,41 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Thu, 15 Nov 2018 23:44:52 +0530
+Source: rm-trash
+Section: utils
+Binary: rm-trash
+Architecture: amd64
+Version: 1.0
+Distribution: jaunty
+Urgency: medium
+Maintainer: nateshmbhatofficial@gmail.com
+Description: Sends deleted files safely into trash for later retrieval
+Changed-By: Natesh M Bhat
+Files:
+ 7726cdb38584aefaea3361fca370d3ab 6652 default extra rm-trash_1.0_amd64.deb
+Changes:
+rm-trash (1.0) minor bug fixes ; urgency=medium
+ .
+   * Package created with FPM.
+Checksums-Sha1:
+ c08bbf5da17309f363a2bd0b33cfd888b0507936 6652 rm-trash_1.0_amd64.deb
+Checksums-Sha256:
+ f3e8d44680828dbca7be712bac149f5b789e04b16827665c037efead439b325b 6652 rm-trash_1.0_amd64.deb
+
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAEBCgAdFiEEvzt+QgSTEgN3BXhF58hRdrI7CZUFAlvtvaYACgkQ58hRdrI7
+CZWsHQv9H/eCS6uJkTu/nuHt/ZZfpi4mo9iizTU8NXJ/PjkDisffzGGUHTKv7YCs
+9gGUyNR3t/KIWx5SbhNY2gPMGZ9lMqfXH71FrnQxDx94gryQICwM+/2T9wX4TgWR
+yQxy09GrqSJ4Oh/nS6e5+Q+jxbu+/JZKNaE9R/NPUAAtpzqJH43b7ZpTamKMk3J9
+Ca/IJXPvIDroCsbRJf8UNimi3MG14LFAdKRbavYh6h1kcwoMmx0RT/9kSdHsIA1h
+//0jpB34fqh49N1JqPPj6dBll0HbI+5QhmUxPq6yKelJslNuoSpW9N7DkFirENjK
+1jqhwfFRKmjCZoisoB0Lcqz0FJAKRaf7fF9JSi9I8DbgUqxDzbg037LruI89vXCf
+u9u3aL3WbU4NtoXyM09Tdp3ghDsK4VnkQTcTCfu6Mz7PYAdG2acC6nVuLhdFHS0v
+7p5PQaZdTbXwteesWetJCMtojvExQ4Qa9Q90Cj6tX99iolXfifwjcLPVPpDYzKth
+9Hzcu3kD
+=m4bg
+-----END PGP SIGNATURE-----

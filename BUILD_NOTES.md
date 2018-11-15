@@ -29,6 +29,10 @@ For help regarding `fpm` use : `fpm --help` (has better docs than in website )
 + Once the *.deb file is created , then its time to sign the package and upload it to any PPA .
 
 + First get the secret key id using `gpg --list-secret-keys name`.
++ Make sure that before signing in , the following fields are present in the source.changes file.
+
+    + Changes
+    + Changed-By
 + Then sign the source.changes file generated using `fpm` command earlier.
 
 
