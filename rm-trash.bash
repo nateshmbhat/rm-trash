@@ -12,6 +12,7 @@ RECURSIVE_FLAG=0
 OPTIONAL_ARGS=()
 FILE_ARGS=()
 NO_BACKUP_FLAG=0
+DEBUGFLAG=0
 
 
 usage(){
@@ -83,7 +84,9 @@ copyToTrashAndWriteInfo(){
 
 # $1 = relative filepath that is exisiting in the filesystem
 
-echo "Args = $@"
+if [ $DEBUGFLAG -eq 1 ] ;then
+     echo "Args = $@"
+fi
 filebasename="$(basename $1)"
 filefullpath="$(realpath $1)"
 filedirname="$(dirname $filefullpath)"
@@ -102,7 +105,9 @@ copyToTrash(){
 
     while test 1 -eq 1
     do
-    echo "duplicate Number = $duplicateNumber"
+    if [ $DEBUGFLAG -eq 1 ] ; then
+        echo "duplicate Number = $duplicateNumber"
+    fi
 
     # first time try to move to trash
     if test "$duplicateNumber" -eq 0
@@ -157,13 +162,14 @@ copyToTrash(){
 
 main(){
 
-    echo "RECURSION : $RECURSIVE_FLAG" ; 
     LOOPENTERFLAG=0
 
     for file in ${FILE_ARGS[@]}
     do
         LOOPENTERFLAG=1
-        echo "file =$file"
+        if [ $DEBUGFLAG -eq 1 ] ; then 
+            echo "file =$file"
+        fi
         if test -e "$file" && test -r "$file" ; then
 
             if test -d "$file" && test "$RECURSIVE_FLAG" == "0" ; then 
@@ -236,6 +242,9 @@ handleArguments(){
 
 
 handleArguments $@
-echo ${OPTIONAL_ARGS[@]}
-echo ${FILE_ARGS[@]}
+if [ $DEBUGFLAG -eq 1 ] ;then 
+    echo ${OPTIONAL_ARGS[@]}
+    echo ${FILE_ARGS[@]}
+fi
+
 main $@

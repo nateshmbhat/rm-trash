@@ -43,10 +43,10 @@ echo "alias rm=rm-trash" >> ~/.bash_aliases
 
 ## Usage :
 
-Usage is just like we use the rm command normally
+Usage is just like we use the rm command normally and supports all options of rm.
 
 ```
-rm filename foldername -r
+rmtrash filename foldername -r
 ```
 Now it shows your filename in the Trash which can then be easily restored to any desired location.
 
@@ -59,5 +59,5 @@ Now it shows your filename in the Trash which can then be easily restored to any
 Add this option to the command to prevent it from putting the files to trash. Useful when you want to remove huge amount of files and sizes.
 
 ```
-rm folder/ -r --no-trash
+rmtrash folder/ -r --no-trash
 ```
