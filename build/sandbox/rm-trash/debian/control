@@ -1,0 +1,17 @@
+Source: rm-trash
+Section: utils
+Priority: optional
+Maintainer: Natesh M Bhat <nateshmbhatofficial@gmail.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 4.1.2
+Homepage: https://github.com/nateshmbhat/rm-trash
+#Vcs-Git: https://anonscm.debian.org/git/collab-maint/rm-trash.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/rm-trash.git
+
+Package: rm-trash
+Architecture: all
+Description: Safely put your removed files into trash for later retrieval.
+ rm-trash utility puts the files you delete in a shell safely into the Trash (Recycle bin). 
+ The script is meant to be used in place of rm system command in linux .
+ rm-trash solves accidental removals and unlike other such utilities and
+ it can handle duplicate files in the trash and works for recursive arguments and any other options that rm supports .

@@ -1,0 +1,5 @@
+rm-trash (1.32-1) bionic; urgency=medium
+
+  * Initial release (Closes: #0)  <0 is the bug number of your ITP>
+
+ -- Natesh M Bhat <nateshmbhatofficial@gmail.com>  Fri, 16 Nov 2018 08:57:17 +0530
