@@ -52,42 +52,44 @@ display this help and exit
 .TP
 \fB\-\-version\fR
 output version information and exit
-.SS "EXAMPLES:"
-.IP
-rm\-trash
 .PP
-AUTHOR:
-.IP
-Natesh M Bhat <nateshmbhatofficial@gmail.com>
-.SS "OTHER:"
-.IP
+.SH OTHER
+.PP
 It's better to make an alias for rm\-trash. For example :
-.TP
+.PP
 alias trash="rm\-trash"
+.PP
 or
-.IP
+.PP
 alias del="rm\-trash"
-.IP
+.PP
 Save the above alias in a file '.bash_aliases' in '/home/natesh/.bash_aliases' (create the file if not present).
-.TP
+.PP
 By default, rm\-trash does not remove directories.
 Use the \fB\-\-recursive\fR (\fB\-r\fR or \fB\-R\fR)
-.IP
+.PP
 option to remove each listed directory, too, along with all of its contents.
-.IP
+.PP
 To remove a file whose name starts with a '\-', for example '\-foo',
 use one of these commands:
 rm\-trash \fB\-\-\fR \fB\-foo\fR
-.IP
+.PP
 rm\-trash ./\-foo
-.IP
+.PP
 Note that if you use rm\-trash to remove a file it can be recovered from trash.
 If you want to make files unrecoverable, consider using shred.
 .PP
-COPYRIGHT:
+.SH AUTHOR
+.IP
+Natesh M Bhat <nateshmbhatofficial@gmail.com>
+.IP
+.PP
+.PP
+.SH COPYRIGHT
+.PP
 .PP
 MIT License
-.SH COPYRIGHT
+.PP
 Copyright \(co 2018 Natesh M Bhat
 .PP
 Permission is hereby granted, free of charge, to any person obtaining a copy

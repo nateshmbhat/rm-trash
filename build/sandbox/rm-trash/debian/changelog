@@ -1,4 +1,4 @@
-rm-trash (1.33-1) bionic; urgency=medium
+rm-trash (1.34-1) bionic; urgency=medium
 
   * Initial release (Closes: #0)  <0 is the bug number of your ITP>
 

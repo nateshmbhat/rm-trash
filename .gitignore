@@ -2,5 +2,3 @@ testing/*
 build/sandbox/*
 !build/sandbox/rm-trash/*
 build/sandbox/rm-trash/debian/files
-
-build/sandbox/rm-trash/debian/files

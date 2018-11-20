@@ -25,28 +25,28 @@ If deletion of was unsuccesful for some reason , it deletes back the saved file 
 
 ## Installation :
 
-Method 1 :
-
-**Put the file in the /usr/local/bin directory and rename it to rm**
-
+```bash
+sudo add-apt-repository ppa:nateshmbhat/rm-trash
+sudo apt-get update
+sudo apt-get install rm-trash
 ```
-mv rm-trash.bash /usr/local/bin/rm
-```
++ 
+    **(Optional step) Its recommended to set an alias to "rm-trash" for easier access to the command  :**
 
-Method 2 :
+    Append the below lines to  `~/.bash_aliases` file to set alias when the shell starts
 
-**Have an alias for rm pointing to this script in bash_aliases**
-```
-echo "alias rm=rm-trash" >> ~/.bash_aliases
-```
-
+    ```bash
+    alias "trash"="rm-trash"
+    # or 
+    alias "del"="rm-trash"
+    ```
 
 ## Usage :
 
 Usage is just like we use the rm command normally and supports all options of rm.
 
 ```
-rmtrash filename foldername -r
+rm-trash filename foldername -r
 ```
 Now it shows your filename in the Trash which can then be easily restored to any desired location.
 
@@ -59,5 +59,5 @@ Now it shows your filename in the Trash which can then be easily restored to any
 Add this option to the command to prevent it from putting the files to trash. Useful when you want to remove huge amount of files and sizes.
 
 ```
-rmtrash folder/ -r --no-trash
+rm-trash folder/ -r --no-trash
 ```
